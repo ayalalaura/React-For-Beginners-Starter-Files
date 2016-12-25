@@ -4,12 +4,26 @@ import { getFunName } from '../helpers';
 // function exported from helpers file two levels up; add 2 dots
 
 class StorePicker extends React.Component {
+  // constructor() {
+  //   super();
+  //   this.goToStore = this.goToStore.bind(this);
+  //   // looks for goToStore method and binds it to this, so this keyword can be bound to the StorePicker component
+  // }
+  goToStore(event) {
+    event.preventDefault();
+    console.log('You changed the URL')
+    // first grab the text from the box
+    // console.log(this);
+    // second transition from / to /store/:storeId
+  }
+  // creating our own method for the onSubmit method we created
+
   render() {
     // return <p>Hello</p>;
     return (
-      <form className="store-selector">
+      <form className="store-selector" onSubmit={this.goToStore.bind(this)}>
         <h2>Please Enter A Store</h2>
-        <input type="text" required placeholder="Store Name" defaultValue={getFunName()} />
+        <input type="text" required placeholder="Store Name" defaultValue={getFunName()} ref={(input) => { this.storeInput = input }} />
         <button type="submit">Visit Store </button>
       </form>
       )
