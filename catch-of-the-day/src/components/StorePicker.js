@@ -13,8 +13,10 @@ class StorePicker extends React.Component {
     event.preventDefault();
     console.log('You changed the URL')
     // first grab the text from the box
-    // console.log(this);
+    const storeId = this.storeInput.value;
+    console.log('Going to ${storeId}')
     // second transition from / to /store/:storeId
+    this.context.router.transitionTo('/store/${storeId}')
   }
   // creating our own method for the onSubmit method we created
 
@@ -29,6 +31,10 @@ class StorePicker extends React.Component {
       )
   }
   // every component needs at least one method - the render()
+}
+
+StorePicker.contextTypes = {
+  router: React.PropTypes.object
 }
 
 export default StorePicker;
