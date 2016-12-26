@@ -4,6 +4,7 @@ import Header from './Header';
 // leave off components from the path as we're referencing something in the same folder
 import Order from './Order';
 import Inventory from './Inventory';
+import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 
 class App extends React.Component {
@@ -46,6 +47,13 @@ class App extends React.Component {
         <div className="catch-of-the-day">
           <div className="menu">
             <Header tagline="Fresh Seafood Market"/>
+            <ul className="list-of-fishes">
+              {
+                Object
+                .keys(this.state.fishes)
+                .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+              }
+            </ul>
           </div>
           <Order />
         {/*Below, we are passing data downstream (to state) via props*/}
