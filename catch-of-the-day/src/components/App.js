@@ -6,6 +6,7 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
   constructor() {
@@ -22,6 +23,21 @@ class App extends React.Component {
       fishes: {},
       order: {}
     };
+  }
+
+  // componentWillMount is a React life cycle component hook that, before the app initially renders in the browser, will sync the component state with the Firebase state (invoked once on client and server side)
+  // use back tick instead of single quote...weird ES6 syntax (upper right on keyboard below esc key)
+  componentWillMount() {
+    this.ref = base.syncState(`${this.props.params.storeId}/fishes`
+      , {
+        context: this,
+        state: 'fishes'
+    });
+  }
+
+  // use another React life cycle to ensure that if we switch to another store/page, syncing for the previous will stop
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
   }
 
   addFish(fish){

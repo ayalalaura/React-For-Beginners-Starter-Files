@@ -16,7 +16,8 @@ class StorePicker extends React.Component {
     const storeId = this.storeInput.value;
     console.log('Going to ${storeId}')
     // second transition from / to /store/:storeId
-    this.context.router.transitionTo('/store/${storeId}')
+    // use back ticks instead of single quotes for the URL (weird ES6 syntax...)
+    this.context.router.transitionTo(`/store/${storeId}`)
   }
   // creating our own method for the onSubmit method we created
 
