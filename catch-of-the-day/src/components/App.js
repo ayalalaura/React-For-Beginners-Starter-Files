@@ -28,11 +28,25 @@ class App extends React.Component {
   // componentWillMount is a React life cycle component hook that, before the app initially renders in the browser, will sync the component state with the Firebase state (invoked once on client and server side)
   // use back tick instead of single quote...weird ES6 syntax (upper right on keyboard below esc key)
   componentWillMount() {
+    // this runs right before the <App> is rendered
     this.ref = base.syncState(`${this.props.params.storeId}/fishes`
       , {
         context: this,
         state: 'fishes'
     });
+
+    // check if there is any order in localStorage (otherwise it will be overwritten when browser reloaded)
+    const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+
+    // if there is something in localStorage
+    if(localStorageRef) {
+      // update our App component's order state
+      this.setState({
+        // to turn the stored string back into an object, use JSON.parse
+        order: JSON.parse(localStorageRef)
+      });
+    }
+
   }
 
   // use another React life cycle to ensure that if we switch to another store/page, syncing for the previous will stop
@@ -40,12 +54,23 @@ class App extends React.Component {
     base.removeBinding(this.ref);
   }
 
+    // before rendering, invoked when new props or state is being received (changed). Ex. when order state is changed, will pass down that info via props and store it
+  // pass in updated props and state
+  // connect to Local Storage for localhost
+  componentWillUpdate(nextProps, nextState) {
+      // console.log('Something changed');
+      // console.log({nextProps, nextState});
+      // storing key, value pair in localStorage
+      // local storage cannot store objects only strings, so you turn the object data into JSON data
+      localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order));
+  }
+
   addFish(fish){
     // update our state
     const fishes = {...this.state.fishes};
     // add in our new fish
     const timestamp = Date.now();
-    fishes['fish-${timestamp}'] = fish;
+    fishes[`fish-${timestamp}`] = fish;
     // set state
     // this.setState({ fishes: fishes }); or
     this.setState({ fishes });
@@ -81,9 +106,16 @@ class App extends React.Component {
               }
             </ul>
           </div>
-          <Order fishes={this.state.fishes} order={this.state.order} />
+          <Order
+              fishes={this.state.fishes}
+              order={this.state.order}
+              params={this.props.params}
+          />
         {/*Below, we are passing data downstream (to state) via props*/}
-          <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
+          <Inventory
+              addFish={this.addFish}
+              loadSamples={this.loadSamples}
+          />
         </div>
       )
   }
