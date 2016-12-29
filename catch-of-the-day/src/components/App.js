@@ -12,9 +12,9 @@ class App extends React.Component {
   constructor() {
     super();
 
-    // bind method addFish to the component
+    // binding methods to the App component to be used by child components
     this.addFish = this.addFish.bind(this);
-    // binding 'this' keyword again to the new method loadSamples
+    this.updateFish = this.updateFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
     this.addToOrder = this.addToOrder.bind(this);
 
@@ -76,6 +76,15 @@ class App extends React.Component {
     this.setState({ fishes });
   }
 
+  // updating fish in our inventory state
+  updateFish(key, updatedFish) {
+      // storing a copy of the existing fishes state
+      const fishes = {...this.state.fishes};
+      fishes[key] = updatedFish;
+      this.setState({ fishes });
+  }
+  // need to make this method available to Inventory.js
+
   loadSamples() {
     this.setState({
       fishes: sampleFishes
@@ -111,10 +120,12 @@ class App extends React.Component {
               order={this.state.order}
               params={this.props.params}
           />
-        {/*Below, we are passing data downstream (to state) via props*/}
+        {/*Passing data downstream (to state) via props*/}
           <Inventory
               addFish={this.addFish}
               loadSamples={this.loadSamples}
+              fishes={this.state.fishes}
+              updateFish={this.updateFish}
           />
         </div>
       )
