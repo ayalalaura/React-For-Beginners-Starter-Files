@@ -15,8 +15,10 @@ class App extends React.Component {
     // binding methods to the App component to be used by child components
     this.addFish = this.addFish.bind(this);
     this.updateFish = this.updateFish.bind(this);
+    this.removeFish = this.removeFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
     this.addToOrder = this.addToOrder.bind(this);
+    this.removeFromOrder = this.removeFromOrder.bind(this);
 
     // getinitialState
     this.state = {
@@ -81,9 +83,21 @@ class App extends React.Component {
       // storing a copy of the existing fishes state
       const fishes = {...this.state.fishes};
       fishes[key] = updatedFish;
+      // update state
       this.setState({ fishes });
   }
   // need to make this method available to Inventory.js
+
+  removeFish(key) {
+    // copy of state
+    const fishes = {...this.state.fishes};
+    // remove fish from state
+    // delete fishes[key];
+    // Above would work if the app wasn't connected to Firebase
+    fishes[key] = null;
+    // update state
+    this.setState({ fishes });
+  }
 
   loadSamples() {
     this.setState({
@@ -99,6 +113,12 @@ class App extends React.Component {
     order[key] = order[key] + 1 || 1;
     // update our state
     // this.setState({ order: order }); or
+    this.setState({ order });
+  }
+
+  removeFromOrder(key) {
+    const order = {...this.state.order};
+    delete order[key];
     this.setState({ order });
   }
 
@@ -119,6 +139,7 @@ class App extends React.Component {
               fishes={this.state.fishes}
               order={this.state.order}
               params={this.props.params}
+              removeFromOrder={this.removeFromOrder}
           />
         {/*Passing data downstream (to state) via props*/}
           <Inventory
@@ -126,6 +147,8 @@ class App extends React.Component {
               loadSamples={this.loadSamples}
               fishes={this.state.fishes}
               updateFish={this.updateFish}
+              removeFish={this.removeFish}
+
           />
         </div>
       )
