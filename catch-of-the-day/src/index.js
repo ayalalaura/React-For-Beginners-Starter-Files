@@ -15,11 +15,12 @@ import StorePicker from './components/StorePicker';
 import NotFound from './components/NotFound';
 
 // for github pages
-const repo = `/${window.location.pathname.split('/')[1]}`;
+// const repo = `/${window.location.pathname.split('/')[1]}`;
 
 const Root = () => {
   return (
-      <BrowserRouter basename={repo}>
+      // <BrowserRouter basename={repo}>
+      <BrowserRouter>
         <div>
           <Match exactly pattern="/" component={ StorePicker } />
           <Match exactly pattern="/store/:storeId" component={ App } />
