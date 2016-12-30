@@ -27,6 +27,13 @@ class App extends React.Component {
     };
   }
 
+  // setting initial state with property initializer (may or may not be incorporated into JS language at some point)
+  // would pass state to the entire object
+    //  state = {
+    //   fishes: {},
+    //   order: {}
+    // };
+
   // componentWillMount is a React life cycle component hook that, before the app initially renders in the browser, will sync the component state with the Firebase state (invoked once on client and server side)
   // use back tick instead of single quote...weird ES6 syntax (upper right on keyboard below esc key)
   componentWillMount() {
@@ -85,10 +92,12 @@ class App extends React.Component {
       fishes[key] = updatedFish;
       // update state
       this.setState({ fishes });
-  }
+  };
   // need to make this method available to Inventory.js
 
   removeFish(key) {
+  // rewriting above with property initializer (comment out the bind method above)
+  // removeFish = (key) => {
     // copy of state
     const fishes = {...this.state.fishes};
     // remove fish from state
@@ -99,7 +108,10 @@ class App extends React.Component {
     this.setState({ fishes });
   }
 
+  // have to use .bind() above to bind this method to 'this' keyword
   loadSamples() {
+  // using property initializer instead of .bind() to bind 'this' keyword to this method
+  // loadSamples = () => {
     this.setState({
       fishes: sampleFishes
     });
